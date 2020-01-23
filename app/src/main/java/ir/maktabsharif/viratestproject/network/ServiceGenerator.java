@@ -2,49 +2,47 @@ package ir.maktabsharif.viratestproject.network;
 
 import android.content.Context;
 
-import com.squareup.moshi.Moshi;
-
 import ir.maktabsharif.viratestproject.utils.Constants;
+import ir.maktabsharif.viratestproject.utils.Utils;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class ServiceGenerator {
 
     private static Retrofit sRetrofit = null;
-    private static Moshi sMoshi = new Moshi.Builder().build();
-    private static long sCacheSize = 5 * 1024 * 1024;
+    private static long sCacheSize = 10 * 1024 * 1024;
     private static OkHttpClient sOkHttpClient;
-    private static OkHttpClient.Builder sOkHttpClientBuilder;
-
-    private static HttpLoggingInterceptor sHttpLoggingInterceptor = new HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
-    private static OkHttpClient.Builder getClient() {
-        if (sOkHttpClientBuilder == null)
-            sOkHttpClientBuilder = new OkHttpClient.Builder()
-                    .addInterceptor(sHttpLoggingInterceptor)
+    private static OkHttpClient getClient(Context context) {
+        if (sOkHttpClient == null)
+            sOkHttpClient = new OkHttpClient.Builder()
+                    .cache(new Cache(context.getCacheDir(), sCacheSize))
                     .addInterceptor(chain -> {
-                        Request request = chain.request().newBuilder().build();
+                        Request request = chain.request();
+                        if (Utils.isNetworkAvailableAndConected(context))
+                            request = request.newBuilder().addHeader("Cache-Control", "public, max-age=" + 5).build();
+                        else
+                            request = request.newBuilder().addHeader("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+
                         return chain.proceed(request);
-                    });
-        return sOkHttpClientBuilder;
+                    })
+                    .build();
+
+        return sOkHttpClient;
 
     }
 
     public static <T> T createService(Class<T> serviceClass, Context context) {
 
-        sOkHttpClient = getClient().cache(new Cache(context.getCacheDir(), sCacheSize)).build();
-
         if (sRetrofit == null) {
             sRetrofit = new Retrofit.Builder()
-                    .client(sOkHttpClient)
+                    .client(getClient(context))
                     .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(MoshiConverterFactory.create(sMoshi))
+                    .addConverterFactory(MoshiConverterFactory.create())
                     .build();
         }
         return sRetrofit.create(serviceClass);
