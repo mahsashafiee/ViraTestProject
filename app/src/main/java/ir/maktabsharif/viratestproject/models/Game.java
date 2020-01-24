@@ -20,7 +20,7 @@ public class Game {
     private String mVideoURL;
 
     @Json(name = "players_count")
-    private long mPlayersCount;
+    private int mPlayersCount;
 
     @Json(name = "genre")
     private Genre mGenre;
@@ -46,7 +46,7 @@ public class Game {
         return mVideoURL;
     }
 
-    public long getPlayersCount() {
+    public int getPlayersCount() {
         return mPlayersCount;
     }
 

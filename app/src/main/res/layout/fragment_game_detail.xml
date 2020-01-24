@@ -1,14 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.GameDetailFragment">
+    android:layout_height="wrap_content">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <include
+            android:id="@+id/video_view_layout"
+            layout="@layout/layout_video_view" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/game_detail_poster"
+            android:layout_width="120dp"
+            android:layout_height="140dp"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/video_view_layout"
+            app:riv_border_color="@android:color/darker_gray"
+            app:riv_border_width="1dp"
+            app:riv_corner_radius="8dp" />
+
+        <TextView
+            android:id="@+id/game_detail_title"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/game_detail_genre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/game_detail_poster"
+            app:layout_constraintTop_toTopOf="@id/game_detail_poster" />
+
+        <TextView
+            android:id="@+id/game_detail_genre"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/game_detail_players_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/game_detail_poster"
+            app:layout_constraintTop_toBottomOf="@id/game_detail_title" />
+
+        <TextView
+            android:id="@+id/game_detail_players_count"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/game_detail_rate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/game_detail_poster"
+            app:layout_constraintTop_toBottomOf="@id/game_detail_genre" />
+
+        <TextView
+            android:id="@+id/game_detail_rate"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/game_detail_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/game_detail_poster"
+            app:layout_constraintTop_toBottomOf="@id/game_detail_players_count" />
+
+        <TextView
+            android:id="@+id/game_detail_description"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@id/game_detail_poster" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

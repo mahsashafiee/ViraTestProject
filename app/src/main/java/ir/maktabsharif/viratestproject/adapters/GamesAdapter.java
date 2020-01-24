@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import java.util.List;
 
 import ir.maktabsharif.viratestproject.R;
 import ir.maktabsharif.viratestproject.models.Game;
-import ir.maktabsharif.viratestproject.utils.SquareImageView;
+import ir.maktabsharif.viratestproject.views.GameDetailActivity;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHolder> {
 
@@ -50,26 +51,42 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
         return mGames.size();
     }
 
-    public class GamesViewHolder extends RecyclerView.ViewHolder {
+    public class GamesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private SquareImageView mGamePoster;
-        private TextView mGameTitle;
+        private ImageView mGamePoster;
+        private TextView mGameTitle, mGameDescription, mGameRate, mGamePlayersCount, mGameGenre;
         private Game mGame;
 
         public GamesViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mGamePoster = itemView.findViewById(R.id.item_games_image);
+            itemView.setOnClickListener(this);
+
+            mGamePoster = itemView.findViewById(R.id.item_games_poster);
             mGameTitle = itemView.findViewById(R.id.item_games_title);
+            mGameRate = itemView.findViewById(R.id.item_games_rate);
+            mGameDescription = itemView.findViewById(R.id.item_games_description);
+            mGamePlayersCount = itemView.findViewById(R.id.item_games_player_count);
+            mGameGenre = itemView.findViewById(R.id.item_games_genre);
 
         }
 
-        public void bind(Game game) {
+        void bind(Game game) {
             mGame = game;
             Picasso.get().load(game.getImageURL())
                     .placeholder(R.drawable.product_image_placeholder)
                     .into(mGamePoster);
             mGameTitle.setText(game.getTitle());
+            mGameDescription.setText(mContext.getResources().getString(R.string.description, game.getDescription()));
+            mGameRate.setText(mContext.getResources().getString(R.string.rate, game.getRate()));
+            mGamePlayersCount.setText(mContext.getResources().getQuantityString(R.plurals.players_count,
+                    game.getPlayersCount(), game.getPlayersCount()));
+            mGameGenre.setText(mContext.getResources().getString(R.string.genre, game.getGenre().getName()));
+        }
+
+        @Override
+        public void onClick(View v) {
+            mContext.startActivity(GameDetailActivity.newIntent(mContext));
         }
     }
 }

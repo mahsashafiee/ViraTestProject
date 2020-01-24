@@ -57,8 +57,8 @@ dependencies {
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //posterSlider
-    implementation 'com.github.mohan-dev1248:PosterSlider:1.0.2'
+    //rounded image view
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
 }

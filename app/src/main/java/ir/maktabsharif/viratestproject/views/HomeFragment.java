@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
         mHomeViewModel.getGames();
 
         mRecyclerView = root.findViewById(R.id.home_recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new GamesAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
 
